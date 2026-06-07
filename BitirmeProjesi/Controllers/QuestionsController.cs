@@ -1,5 +1,6 @@
 ﻿using BitirmeProjesi.Data;
 using BitirmeProjesi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ namespace BitirmeProjesi.Controllers
         private readonly ApplicationDbContext _context;
         public QuestionsController(ApplicationDbContext context) { _context = context; }
 
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Question>>> GetQuestions()
         {

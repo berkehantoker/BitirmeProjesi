@@ -10,6 +10,10 @@ namespace BitirmeProjesi.Data
         public DbSet<Question> Questions { get; set; }
         public DbSet<UserResponse> UserResponses { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
+        public DbSet<TestResult> TestResults { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -62,6 +66,21 @@ namespace BitirmeProjesi.Data
                 new Question { Id = 40, Dimension = "C", IsReverse = false, QuestionText = "Lisans sözleşmesini ihlal eden yazılımları kullanmak bir suçtur." },
                 new Question { Id = 41, Dimension = "C", IsReverse = false, QuestionText = "Siber alanda gizli görevlere ilişkin sırların ifşa edilmesi bir suçtur." }
             );
+
+          
+
+
+            modelBuilder.Entity<UserResponse>()
+                .HasOne(ur => ur.User)
+                .WithMany(u => u.Responses)
+                .HasForeignKey(ur => ur.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserResponse>()
+                .HasOne(ur => ur.Question)
+                .WithMany(q => q.Responses)
+                .HasForeignKey(ur => ur.QuestionId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
