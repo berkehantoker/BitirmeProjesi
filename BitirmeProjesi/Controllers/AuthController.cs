@@ -1,80 +1,46 @@
-﻿using Bitirme.Core.DTOs;
-using BitirmeProjesi.Data;
-using BitirmeProjesi.Models;
+﻿using Bitirme.Services.Abstract;
+using Bitirme.Core.DTOs;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using System.Threading.Tasks;
 
-[ApiController]
-[Route("api/[controller]")]
-public class AuthController : ControllerBase
+namespace BitirmeProjesi.Controllers
 {
-    private readonly ApplicationDbContext _context;
-    private readonly IConfiguration _configuration;
-
-    public AuthController(ApplicationDbContext context, IConfiguration configuration)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthController : ControllerBase
     {
-        _context = context;
-        _configuration = configuration;
-    }
+        private readonly IAuthService _authService;
 
-    [HttpPost("register")]
-    public async Task<ActionResult<User>> Register(UserRegisterDto request)
-    {
-    
-        string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
-
-        var user = new User
+        public AuthController(IAuthService authService)
         {
-            Username = request.Username,
-            Email = request.Email,
-            PasswordHash = passwordHash
-        };
-
-        _context.Users.Add(user);
-        await _context.SaveChangesAsync();
-        return Ok(user);
-    }
-
-    [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(UserLoginDto request)
-    {
-        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
-
-        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-        {
-            return BadRequest("Hatalı email veya şifre.");
+            _authService = authService;
         }
 
-        
-        string token = CreateToken(user);
-        return Ok(token);
-    }
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserRegisterDto request)
+        {
+            var user = await _authService.RegisterAsync(request);
 
-    private string CreateToken(User user)
-    {
-        List<Claim> claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, user.Username),
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Email, user.Email)
-    };
+            
+            return Ok(new
+            {
+                Message = "Kayıt başarılı",
+                Username = user.Username,
+                Email = user.Email
+            });
+        }
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-            _configuration.GetSection("AppSettings:Token").Value!));
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(UserLoginDto request)
+        {
+            var token = await _authService.LoginAsync(request);
 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            if (token == null)
+            {
+                return BadRequest("Hatalı email veya şifre.");
+            }
 
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.Now.AddDays(1), 
-            signingCredentials: creds
-        );
-
-        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
-        return jwt;
+            return Ok(new { Token = token }); 
+        }
     }
 }

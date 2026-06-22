@@ -1,5 +1,10 @@
-using BitirmeProjesi.Data;
-using BitirmeProjesi.Services;
+using Bitirme.Business.Concrete;
+using Bitirme.Repository.Abstract;
+using Bitirme.Repository.Concrete;
+using Bitirme.Repository.Data;
+using Bitirme.Services;
+using Bitirme.Services.Abstract;
+using Bitirme.Services.Concrete;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,8 +14,15 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<AiService>();
 builder.Services.AddControllers();
+
+// Business katmanýndaki servislerin sisteme tanýtýlmasý
+builder.Services.AddScoped<IAiService, AiManager>();
+builder.Services.AddScoped<ITestService, TestManager>();
+builder.Services.AddScoped<IAuthService, AuthManager>();
+// Repository'leri sisteme tanýtýyoruz
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

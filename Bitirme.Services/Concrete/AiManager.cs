@@ -1,18 +1,17 @@
-﻿using OpenAI.Chat;
+﻿using Bitirme.Services.Abstract;
 using Microsoft.Extensions.Configuration;
+using OpenAI.Chat;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BitirmeProjesi.Services
+namespace Bitirme.Services.Concrete
 {
-    
-    public class AiService
+    public class AiManager : IAiService
     {
         private readonly ChatClient _client;
 
-        public AiService(IConfiguration configuration)
+        public AiManager(IConfiguration configuration)
         {
-            
             var apiKey = configuration["OpenAI:ApiKey"];
             var model = configuration["OpenAI:Model"] ?? "gpt-4o-mini";
 
@@ -24,21 +23,17 @@ namespace BitirmeProjesi.Services
             _client = new ChatClient(model, apiKey);
         }
 
-        /// <summary>
-        /// Kullanıcının genel skorlarını ve 41 soruya verdiği detaylı yanıtları analiz ederek rapor oluşturur.
-        /// </summary>
-        /// <param name="scoreA">Bilişim Sistemleri Suçları Yüzdesi</param>
-        /// <param name="scoreB">Kişisel Veri Suçları Yüzdesi</param>
-        /// <param name="scoreC">Gizlilik ve Güvenlik Yüzdesi</param>
-        /// <param name="detailedResponses">Her bir sorunun metni ve kullanıcının puanını içeren liste</param>
         public async Task<string> GenerateDetailedReportAsync(double scoreA, double scoreB, double scoreC, List<string> detailedResponses)
         {
-            
-            string systemPrompt = "Sen profesyonel bir Siber Güvenlik Farkındalık Uzmanısın. " +
-                                  "Kullanıcının Siber Güvenlik Farkındalık Ölçeği (CAS) sonuçlarını analiz edip, " +
-                                  "akademik bir dille kişiselleştirilmiş bir gelişim raporu hazırlayacaksın.";
+            string systemPrompt = @"Sen profesyonel bir Siber Güvenlik Farkındalık Uzmanısın ve Akademisyensin. 
+Kullanıcının çözdüğü test, literatürde yeri olan 'Siber Suç Farkındalık Ölçeği (Cybercrime Awareness Scale - CAS)' adlı bilimsel bir araçtır. 
+Bu ölçek 3 temel boyuttan oluşur:
+1. Bilişim Sistemleri Suçları: Sisteme yetkisiz erişim, hackleme ve zararlı yazılımlar.
+2. Kişisel Veri Suçları: Kimlik hırsızlığı, şifre güvenliği ve özel hayatın gizliliği.
+3. Gizlilik ve Güvenlik: Sosyal mühendislik, oltalama (phishing) ve dijital ayak izi koruması.
 
-            
+Görev: Kullanıcının bu 3 boyuttaki CAS ölçeği sonuçlarını ve soru bazlı cevaplarını analiz ederek, akademik ve yol gösterici kişiselleştirilmiş bir gelişim raporu hazırlamak. Yorumlarını yaparken CAS ölçeğinin bu bilimsel temellerine atıfta bulun.";
+
             string userContent = $@"
                 AŞAĞIDAKİ VERİLERİ ANALİZ ET:
                 
@@ -66,13 +61,12 @@ namespace BitirmeProjesi.Services
 
             try
             {
-                
                 ChatCompletion completion = await _client.CompleteChatAsync(messages);
                 return completion.Content[0].Text;
             }
             catch (System.Exception ex)
             {
-                return $"Rapor oluşturulurken bir hata oluştu: {ex.Message}";
+                return $"Rapor oluşturulurken bir hata oluştu: {ex.ToString()}";
             }
         }
     }

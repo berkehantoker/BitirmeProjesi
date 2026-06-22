@@ -1,4 +1,4 @@
-﻿namespace BitirmeProjesi.Models
+﻿namespace Bitirme.Core.Models
 {
     public class User
     {

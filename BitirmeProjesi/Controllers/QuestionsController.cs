@@ -1,5 +1,5 @@
-﻿using BitirmeProjesi.Data;
-using BitirmeProjesi.Models;
+﻿using Bitirme.Repository.Data;
+using Bitirme.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

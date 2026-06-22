@@ -1,7 +1,7 @@
-﻿using BitirmeProjesi.Models;
+﻿using Bitirme.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace BitirmeProjesi.Data
+namespace Bitirme.Repository.Data
 {
     public class ApplicationDbContext : DbContext
     {

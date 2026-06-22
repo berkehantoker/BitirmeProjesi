@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace BitirmeProjesi.Models
+namespace Bitirme.Core.Models
 {
     public class TestResult
     {
