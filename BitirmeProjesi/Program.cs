@@ -16,13 +16,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
-// Business katmanýndaki servislerin sisteme tanýtýlmasý
+
 builder.Services.AddScoped<IAiService, AiManager>();
 builder.Services.AddScoped<ITestService, TestManager>();
 builder.Services.AddScoped<IAuthService, AuthManager>();
-// Repository'leri sisteme tanýtýyoruz
+
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
+builder.Services.AddScoped<IAdminService, AdminManager>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserManager>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

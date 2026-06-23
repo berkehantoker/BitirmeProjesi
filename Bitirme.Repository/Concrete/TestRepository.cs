@@ -33,5 +33,14 @@ namespace Bitirme.Repository.Concrete
             await _context.TestResults.AddAsync(result);
             await _context.SaveChangesAsync();
         }
+
+
+        public async Task<TestResult?> GetLastTestByUserIdAsync(int userId)
+        {
+            return await _context.TestResults
+                .Where(t => t.UserId == userId)
+                .OrderByDescending(t => t.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
     }
 }

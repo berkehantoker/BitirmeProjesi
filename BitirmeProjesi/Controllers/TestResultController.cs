@@ -56,5 +56,19 @@ namespace BitirmeProjesi.Controllers
             return Ok(userHistory);
         }
 
+
+        [HttpGet("can-take-test")]
+        public async Task<IActionResult> CanTakeTest()
+        {
+            var userIdString = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
+
+            int userId = int.Parse(userIdString);
+
+            // Bütün işi Service (Aşçı) hallediyor!
+            var eligibility = await _testService.CheckTestEligibilityAsync(userId);
+
+            return Ok(eligibility);
+        }
     }
 }

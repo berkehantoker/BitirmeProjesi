@@ -10,5 +10,7 @@
 
 
         public List<UserResponse>? Responses { get; set; }
+
+        public string Role { get; set; } = "User";
     }
 }

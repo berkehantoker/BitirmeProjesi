@@ -10,5 +10,7 @@ namespace Bitirme.Services.Abstract
         Task<TestAnalysisResultDto> SubmitTestAsync(int userId, List<QuestionResponseDto> responses);
 
         Task<List<TestResult>> GetUserHistoryAsync(int userId);
+
+        Task<TestEligibilityDto> CheckTestEligibilityAsync(int userId);
     }
 }

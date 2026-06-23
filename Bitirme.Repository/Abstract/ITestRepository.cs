@@ -8,5 +8,7 @@ namespace Bitirme.Repository.Abstract
         Task SaveTestResult(List<UserResponse> responses, TestResult result);
 
         Task<List<TestResult>> GetUserHistoryAsync(int userId);
+
+        Task<TestResult> GetLastTestByUserIdAsync(int userId);
     }
 }
