@@ -22,7 +22,7 @@ namespace BitirmeProjesi.Controllers
         [HttpGet("profile-info")]
         public async Task<IActionResult> GetProfileInfo()
         {
-            // Token'ın içindeki (Claim) kullanıcı ID'sini okuyoruz
+           
             var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdString)) return Unauthorized();
 

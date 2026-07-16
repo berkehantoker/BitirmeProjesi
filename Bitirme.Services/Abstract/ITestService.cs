@@ -11,6 +11,6 @@ namespace Bitirme.Services.Abstract
 
         Task<List<TestResult>> GetUserHistoryAsync(int userId);
 
-        Task<TestEligibilityDto> CheckTestEligibilityAsync(int userId);
+       
     }
 }

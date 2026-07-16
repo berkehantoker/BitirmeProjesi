@@ -22,7 +22,7 @@ namespace Bitirme.Repository.Concrete
             int totalUsers = await _context.Users.CountAsync();
             int totalTests = await _context.TestResults.CountAsync();
 
-            // Veri kirliliğini önlemek için her kullanıcının sadece EN SON testini alıyoruz
+            
             var latestTests = await _context.TestResults
                 .Include(t => t.User)
                 .GroupBy(t => t.UserId)
@@ -70,7 +70,7 @@ namespace Bitirme.Repository.Concrete
             };
         }
 
-        // AKADEMİK EXPORT İÇİN YENİ METOT
+        
         public async Task<string> GetExportDataCsvAsync()
         {
             var allTests = await _context.TestResults.Include(t => t.User).OrderBy(t => t.CreatedAt).ToListAsync();

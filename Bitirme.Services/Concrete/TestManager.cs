@@ -85,31 +85,6 @@ namespace Bitirme.Business.Concrete
         }
 
 
-        public async Task<TestEligibilityDto> CheckTestEligibilityAsync(int userId)
-        {
-            // Kilerciye "Bana bu adamın son testini getir" diyoruz
-            var lastTest = await _testRepository.GetLastTestByUserIdAsync(userId);
-
-            // Adam hiç test çözmemişse serbest
-            if (lastTest == null) return new TestEligibilityDto { CanTake = true };
-
-            // İş Mantığı: 24 Saat Kuralı
-            var timeSinceLastTest = DateTime.UtcNow - lastTest.CreatedAt;
-            var cooldownPeriod = TimeSpan.FromHours(24);
-
-            if (timeSinceLastTest < cooldownPeriod)
-            {
-                var timeLeft = cooldownPeriod - timeSinceLastTest;
-                return new TestEligibilityDto
-                {
-                    CanTake = false,
-                    Message = "Yeni bir test çözmek için beklemeniz gerekiyor.",
-                    HoursLeft = timeLeft.Hours,
-                    MinutesLeft = timeLeft.Minutes
-                };
-            }
-
-            return new TestEligibilityDto { CanTake = true };
-        }
+     
     }
 }

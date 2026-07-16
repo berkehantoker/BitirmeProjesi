@@ -28,7 +28,7 @@ namespace Bitirme.Business.Concrete
             };
         }
 
-        // EKLENEN YENİ GÜNCELLEME MANTIĞI
+      
         public async Task<bool> UpdateProfileAsync(int userId, UpdateProfileDto dto)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);
