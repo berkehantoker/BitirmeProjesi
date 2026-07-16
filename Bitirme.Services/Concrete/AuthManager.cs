@@ -44,7 +44,7 @@ namespace Bitirme.Services.Concrete
             return user;
         }
 
-        public async Task<string> LoginAsync(UserLoginDto request)
+        public async Task<AuthResponseDto> LoginAsync(UserLoginDto request)
         {
             var user = await _authRepository.GetUserByEmail(request.Email);
 
@@ -55,10 +55,14 @@ namespace Bitirme.Services.Concrete
             }
 
             // Her şey doğruysa Token'ı üret
-            return CreateToken(user);
+            return new AuthResponseDto
+            {
+                Token = CreateToken(user),
+                Role = user.Role
+            };
         }
 
-        // Token üretme metodu artık dışarıdan erişime kapalı (private) olarak burada güvende
+       
         private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>

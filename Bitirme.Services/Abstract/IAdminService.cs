@@ -6,5 +6,7 @@ namespace Bitirme.Services.Abstract
     public interface IAdminService
     {
         Task<AdminStatsDto> GetSystemStatisticsAsync();
+
+        Task<string> GetExportDataCsvAsync();
     }
 }

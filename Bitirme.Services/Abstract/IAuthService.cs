@@ -7,6 +7,6 @@ namespace Bitirme.Services.Abstract
     public interface IAuthService
     {
         Task<User> RegisterAsync(UserRegisterDto request);
-        Task<string> LoginAsync(UserLoginDto request);
+        Task<AuthResponseDto> LoginAsync(UserLoginDto request);
     }
 }

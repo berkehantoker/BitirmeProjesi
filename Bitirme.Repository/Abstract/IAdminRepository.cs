@@ -6,5 +6,7 @@ namespace Bitirme.Repository.Abstract
     public interface IAdminRepository
     {
         Task<AdminStatsDto> GetGeneralStatisticsAsync();
+
+        Task<string> GetExportDataCsvAsync();
     }
 }

@@ -48,10 +48,7 @@ namespace Bitirme.Business.Concrete
              
             }
 
-            // Repository katmanı Entity'yi takip ettiği için (tracking), 
-            // SaveChanges çağırmak yeterlidir. (Context kilerde kayıt mühürler)
-            // Biz doğrudan burada kaydedebiliriz veya Repository'ye update metodu yazabiliriz.
-            // En temizi kilerde SaveChangesAsync çalışmasıdır.
+           
             return await _userRepository.SaveChangesAsync();
         }
     }

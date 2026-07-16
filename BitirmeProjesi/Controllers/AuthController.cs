@@ -33,14 +33,19 @@ namespace BitirmeProjesi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto request)
         {
-            var token = await _authService.LoginAsync(request);
+            var response = await _authService.LoginAsync(request);
 
-            if (token == null)
+            if (response == null)
             {
                 return BadRequest("Hatalı email veya şifre.");
             }
 
-            return Ok(new { Token = token }); 
+            
+            return Ok(new
+            {
+                token = response.Token,
+                role = response.Role
+            });
         }
     }
 }

@@ -14,6 +14,11 @@ namespace Bitirme.Business.Concrete
             _adminRepository = adminRepository;
         }
 
+        public async Task<string> GetExportDataCsvAsync()
+        {
+            return await _adminRepository.GetExportDataCsvAsync();
+        }
+
         public async Task<AdminStatsDto> GetSystemStatisticsAsync()
         {
             return await _adminRepository.GetGeneralStatisticsAsync();
